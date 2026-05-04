@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>3D Druck Rechner</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="3D Druck">
+
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1995/1995574.png">
+
+<style>
+body {
+  font-family: -apple-system, sans-serif;
+  background: #f2f2f7;
+  margin: 0;
+  padding: 20px;
+}
+h1 { text-align: center; }
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 15px;
+  background: #007aff;
+  color: white;
+  font-size: 18px;
+}
+.result { margin-top: 10px; }
+.highlight { font-size: 22px; font-weight: bold; }
+</style>
+</head>
+
+<body>
+
+<h1>🖨️ 3D Druck</h1>
+
+<div class="card">
+  <input id="price" type="number" value="15" placeholder="€/kg">
+  <input id="consumption" type="number" value="30" placeholder="g/h">
+  <input id="power" type="number" step="0.01" value="0.06" placeholder="Strom €/h">
+</div>
+
+<div class="card">
+  <input id="grams" type="number" value="60" placeholder="Gewicht (g)">
+  <button onclick="calc()">Berechnen</button>
+</div>
+
+<div class="card result" id="output"></div>
+
+<script>
+function calc() {
+  let price = priceEl.value;
+  let consumption = consumptionEl.value;
+  let power = powerEl.value;
+  let grams = gramsEl.value;
+
+  let pricePerGram = price / 1000;
+  let material = grams * pricePerGram;
+  let hours = grams / consumption;
+  let energy = hours * power;
+  let total = material + energy;
+
+  output.innerHTML = `
+    ⏱️ ${hours.toFixed(2)} h<br>
+    🧵 ${material.toFixed(2)} €<br>
+    ⚡ ${energy.toFixed(2)} €<br>
+    <div class="highlight">💰 ${total.toFixed(2)} €</div>
+  `;
+}
+
+const priceEl = document.getElementById("price");
+const consumptionEl = document.getElementById("consumption");
+const powerEl = document.getElementById("power");
+const gramsEl = document.getElementById("grams");
+const output = document.getElementById("output");
+</script>
+
+</body>
+</html>
